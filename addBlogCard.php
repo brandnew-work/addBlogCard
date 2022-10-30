@@ -147,14 +147,18 @@ function addBlogCard($atts) {
       // 外部サイトの情報取得
       $xpath = addBlogCard_get_data($url);
       // title取得
-      $title = $xpath->query('//head/title[1]') ? $xpath->query('//head/title[1]')->item(0)->nodeValue : "";
+      if(empty($title)) {
+        $title = $xpath->query('//head/title[1]') ? $xpath->query('//head/title[1]')->item(0)->nodeValue : "";
+      }
       // description取得
-      if($xpath->query('//meta[@property="og:description"]')[0]) {
-        $excerpt = $xpath->query('//meta[@property="og:description"]/@content')[0]->textContent;
-      } else if($xpath->query('//meta[@name="description"]')[0]) {
-        $excerpt = $xpath->query('//meta[@name="description"]/@content')[0]->textContent;
-      } else {
-        $excerpt = "";
+      if(empty($excerpt)) {
+        if($xpath->query('//meta[@property="og:description"]')[0]) {
+          $excerpt = $xpath->query('//meta[@property="og:description"]/@content')[0]->textContent;
+        } else if($xpath->query('//meta[@name="description"]')[0]) {
+          $excerpt = $xpath->query('//meta[@name="description"]/@content')[0]->textContent;
+        } else {
+          $excerpt = "";
+        }
       }
     } else if(empty($tax)) {
       // タクソノミー一覧ではない場合の取得 ------------------------------------------------------------
