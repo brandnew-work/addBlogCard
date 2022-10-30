@@ -8,7 +8,7 @@
 
 $img_width  = 90;  // 画像サイズの幅指定
 $img_height = 90;  // 画像サイズの高さ指定
-$length     = 100; // get_the_excerptが聞かなかった場合の文字数
+$length     = 100; // post_excerptがなかった場合の文字数
 $site_icon  = addBlogCard_get_template_url().'/assets/site-icon.png'; // サイトアイコンの画像URLを指定
 $no_image   = addBlogCard_get_template_url().'/assets/no-image.png';  // アイキャッチ画像がない場合の画像URLを指定
 
@@ -77,8 +77,8 @@ function addBlogCard_excerpt($post_id) {
     // excerptが入力されている場合
     $return = $post->post_excerpt;
   } else {
-    // excerptが入力されていない場合（不明エラーの回避）
-    $return = $post->post_content;                // 取得
+    // excerptが入力されていない場合
+    $return = $post->post_content;
     $return = addBlogCard_flat_text($return);
     // $lengthよりも文字数が多い場合の対処
     if(mb_strlen($return) > $length) {
@@ -150,7 +150,7 @@ function addBlogCard($atts) {
       if(empty($title)) {
         $title = $xpath->query('//head/title[1]') ? $xpath->query('//head/title[1]')->item(0)->nodeValue : "";
       }
-      // description取得
+      // excerpt取得
       if(empty($excerpt)) {
         if($xpath->query('//meta[@property="og:description"]')[0]) {
           $excerpt = $xpath->query('//meta[@property="og:description"]/@content')[0]->textContent;
