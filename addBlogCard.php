@@ -73,10 +73,9 @@ function addBlogCard_flat_text( $text ) {
 function addBlogCard_excerpt($post_id) {
   global $length;
   $post   = get_post($post_id);
-  setup_postdata($post);
   if($post->post_excerpt) {
     // excerptが入力されている場合
-    $return = get_the_excerpt();
+    $return = $post->post_excerpt;
   } else {
     // excerptが入力されていない場合（不明エラーの回避）
     $return = $post->post_content;                // 取得
@@ -87,7 +86,6 @@ function addBlogCard_excerpt($post_id) {
       $return .= '...';
     }
   }
-  wp_reset_postdata();
   return $return;
 }
 
